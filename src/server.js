@@ -4,22 +4,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const { Client } = require('pg');
-client = new Client({
-   host: 'localhost',
-   db: 'local_map_server',
-   user: 'postgres',
-   password: 'password',
-   port: 5432,
-});
-client.connect();
+//connect DB
+const http = require('./connect');
 
 app.get('/', (req, res) => {
    return res.send('Welcome to API : Projecgt Geo Map University of phayao')
 })
 
 app.get('/map-data', (req, res) => {
-   client.query('SELECT * FROM map_2d_data', (err, result) => {
+   http.query('SELECT * FROM map_2d_data', (err, result) => {
       if (!err) {
          return res.send({ status: 'SUCCESS', data: result.rows })
       } else {
