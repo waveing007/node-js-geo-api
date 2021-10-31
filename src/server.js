@@ -22,6 +22,18 @@ app.get('/map-data', (req, res) => {
    })
 })
 
+app.post("/upload", async (req, res) => {
+   let dataReq = req.body;
+   let status;
+   await dataReq.forEach((element, index) => {
+      const sql = `INSERT INTO map_2d_data (longitude, latitude, deep, year ) VALUES (${element.longitude}, ${element.latitude},${element.deep},${element.year})`;
+      http.query(sql, function (err, result) {
+         if (err) throw err;
+      });
+   });
+   return res.send({ status: 'SUCCESS' });
+});
+
 app.listen(4200, () => {
    console.log('Start Server running on port : 4200')
 })
